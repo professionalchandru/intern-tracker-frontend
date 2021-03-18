@@ -141,6 +141,16 @@ const AdminSignup = () => {
                         >
                             Signup
                         </Button>
+                        <br />
+                        <br />
+                        <Typography
+                            component={Link}
+                            to="/login/admin"
+                            variant="subtitle1"
+                            color="secondary"
+                        >
+                            Already have account? Login
+                        </Typography>
                     </form>
                 </section>
             </Container>

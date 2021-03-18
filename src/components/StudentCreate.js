@@ -3,7 +3,10 @@ import { Link, useHistory } from "react-router-dom";
 import { Button, TextField, Container, Typography } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import axios from "axios";
+
+// import components
 import baseUrl from "../services/apiService";
+import PersistentDrawerLeft from "../components/Drawer";
 
 const StudentCreate = () => {
     const [student, setStudent] = useState({
@@ -90,6 +93,9 @@ const StudentCreate = () => {
     return (
         <>
             <Container>
+                <section>
+                    <PersistentDrawerLeft />
+                </section>
                 <section className="center-elements">
                     <Typography variant="h4" className="typo">
                         Create Student Profile
