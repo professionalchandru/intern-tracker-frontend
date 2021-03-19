@@ -22,8 +22,10 @@ const StudentCreateForm = ({
     createStudent,
     edit,
 }) => {
-    let newProjects = Object.values(projects);
-    const [selectedValue, setSelectedValue] = useState("");
+    let newProjects;
+    if (!edit) {
+        newProjects = Object.values(projects);
+    }
     return (
         <>
             <TextField
