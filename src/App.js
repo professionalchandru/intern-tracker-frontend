@@ -14,6 +14,11 @@ import ViewProjects from "./pages/ViewProjects";
 import ViewWorkLog from "./pages/ViewWorkLog";
 import StudentEdit from "./components/StudentEdit";
 import StudentDelete from "./components/StudentDelete";
+import ProjectView from "./components/ProjectView";
+import ProjectEdit from "./components/ProjectEdit";
+import ProjectDelete from "./components/ProjectDelete";
+import AddTask from "./components/AddTask";
+import TaskView from "./components/TaskView";
 
 function App() {
     return (
@@ -25,11 +30,11 @@ function App() {
                 <Route exact path="/admin">
                     <AdminSignup />
                 </Route>
-                <Route exact path="/login/student">
-                    <StudentLogin />
-                </Route>
                 <Route exact path="/login/admin">
                     <AdminLogin />
+                </Route>
+                <Route exact path="/login/student">
+                    <StudentLogin />
                 </Route>
                 <Route exact path="/admin/addStudent">
                     <StudentCreate />
@@ -46,6 +51,19 @@ function App() {
                 <Route exact path="/admin/addProject">
                     <ProjectCreate />
                 </Route>
+                <Route
+                    path="/admin/project/view/:id"
+                    children={<ProjectView />}
+                ></Route>
+                <Route
+                    path="/admin/project/edit/:id"
+                    children={<ProjectEdit />}
+                ></Route>
+                <Route
+                    path="/admin/project/delete/:id"
+                    children={<ProjectDelete />}
+                ></Route>
+
                 <Route exact path="/admin/dashboard">
                     <AdminDashboard />
                 </Route>
@@ -58,9 +76,15 @@ function App() {
                 <Route exact path="/admin/viewWorkLog">
                     <ViewWorkLog />
                 </Route>
+
+                <Route exact path="/admin/project/:projectId/task/add">
+                    <AddTask />
+                </Route>
+                <Route exact path="/admin/project/:projectId/task/view/:taskId">
+                    <TaskView />
+                </Route>
             </Switch>
         </div>
     );
 }
-
 export default App;

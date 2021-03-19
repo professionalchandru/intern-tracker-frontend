@@ -1,18 +1,19 @@
-import React, { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useHistory, useParams } from "react-router-dom";
 import { Button, TextField, Container, Typography } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import axios from "axios";
 
-// import componenets and pages
+// import components
 import baseUrl from "../services/apiService";
 import PersistentDrawerLeft from "../components/Drawer";
 
-const ProjectCreate = () => {
+const ProjectEdit = () => {
+    const { id } = useParams();
     const [project, setProject] = useState({
         projectName: "",
-        projectDescription: "",
         projectEstimatedCompletionTime: "",
+        isProjectCompleted: false,
     });
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
@@ -20,30 +21,56 @@ const ProjectCreate = () => {
     const [isSuccess, setIsSuccess] = useState(false);
     const history = useHistory();
 
+    const getProject = async (id) => {
+        let projectResponse = await axios.get(`${baseUrl}/projects/${id}`);
+        if (projectResponse.data) {
+            setProject((oldState) => {
+                return { ...oldState, ...projectResponse.data };
+            });
+        }
+    };
+
+    useEffect(() => {
+        getProject(id);
+    }, [id]);
+
+    useEffect(() => {
+        if (isSuccess) {
+            setTimeout(() => {
+                history.push("/admin/viewProject");
+            }, 3000);
+        }
+    });
+
     const handleChange = (e) => {
         const name = e.target.name;
         const value = e.target.value;
         setProject({ ...project, [name]: value });
     };
 
-    const createProject = async (e) => {
+    const updateProject = async (e) => {
         e.preventDefault();
         if (
             project.projectName &&
-            project.projectDescription &&
-            project.projectEstimatedCompletionTime
+            project.projectEstimatedCompletionTime &&
+            project.isProjectCompleted
         ) {
-            let signupCredentials = {
+            if (project.isProjectCompleted === "true") {
+                project.isProjectCompleted = true;
+            } else {
+                project.isProjectCompleted = false;
+            }
+            let EditCredentials = {
                 projectName: project.projectName,
-                projectDescription: project.projectDescription,
                 projectEstimatedCompletionTime:
                     project.projectEstimatedCompletionTime,
+                isProjectCompleted: project.isProjectCompleted,
             };
-            let response = await axios.post(
-                `${baseUrl}/projects/create`,
-                signupCredentials
+            let response = await axios.patch(
+                `${baseUrl}/projects/${id}`,
+                EditCredentials
             );
-            console.log(response.data.message, "res");
+            // console.log(response.data.message, "res");
             if (response.data.status == "failure") {
                 setIsSuccess(false);
                 setSuccess("");
@@ -73,7 +100,7 @@ const ProjectCreate = () => {
                 <main>
                     <section className="center-elements">
                         <Typography variant="h4" className="typo">
-                            Create Project Profile
+                            Edit Project Profile
                         </Typography>
                     </section>
                     <section
@@ -112,14 +139,6 @@ const ProjectCreate = () => {
                             />
                             <br />
                             <TextField
-                                label="Description"
-                                id="projectDescription"
-                                name="projectDescription"
-                                value={project.projectDescription}
-                                onChange={handleChange}
-                            />
-                            <br />
-                            <TextField
                                 label="Estimated Completion Time"
                                 id="projectEstimatedCompletionTime"
                                 name="projectEstimatedCompletionTime"
@@ -127,17 +146,45 @@ const ProjectCreate = () => {
                                 onChange={handleChange}
                             />
                             <br />
+                            <div>
+                                <span>
+                                    <label htmlFor="projectId">
+                                        Select Project Status
+                                    </label>
+                                </span>
+                                <br />
+                                <select
+                                    value={project.isProjectCompleted}
+                                    name="isProjectCompleted"
+                                    id="isProjectCompleted"
+                                    onChange={handleChange}
+                                    style={{ width: "200px" }}
+                                >
+                                    <option value="true">Completed</option>
+                                    <option value="false">Not Completed</option>
+                                </select>
+                            </div>
+
+                            <br />
                             <br />
                             <Button
                                 className="login-btn"
                                 color="primary"
                                 variant="contained"
                                 type="submit"
-                                onClick={createProject}
+                                onClick={updateProject}
                             >
-                                Create Project
+                                Update Project
                             </Button>
                         </form>
+                        {/* <form>
+                            <ProjectCreateForm
+                                {...project}
+                                handleChange={handleChange}
+                                editProject={editProject}
+                                edit={true}
+                            />
+                        </form> */}
                     </section>
                 </main>
             </Container>
@@ -145,4 +192,4 @@ const ProjectCreate = () => {
     );
 };
 
-export default ProjectCreate;
+export default ProjectEdit;

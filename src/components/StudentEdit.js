@@ -51,7 +51,7 @@ const StudentEdit = () => {
     const handleChange = (e) => {
         const name = e.target.name;
         const value = e.target.value;
-        setStudent({ ...student, [name]: value, projectId: 1 });
+        setStudent({ ...student, [name]: value });
     };
 
     const editStudent = async (e) => {

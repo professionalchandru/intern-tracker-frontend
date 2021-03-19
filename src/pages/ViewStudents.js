@@ -69,7 +69,13 @@ const ViewStudents = () => {
                         Students
                     </Typography>
                     <br />
-                    {students && <StudentTable {...students} />}
+                    {!students.length ? (
+                        <Typography variant="h4" color="secondary">
+                            OOPS... No Students Found
+                        </Typography>
+                    ) : (
+                        <StudentTable {...students} />
+                    )}
                 </main>
             </Container>
         </>
