@@ -4,6 +4,7 @@ import { Button, TextField, Container, Typography } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import axios from "axios";
 import baseUrl from "../services/apiService";
+import AdminSignUpForm from "../components/AdminSignUpForm";
 
 const AdminSignup = () => {
     const [admin, setAdmin] = useState({
@@ -82,65 +83,11 @@ const AdminSignup = () => {
                 </section>
                 <section className="center-elements">
                     <form>
-                        <TextField
-                            label="Name"
-                            id="name"
-                            name="name"
-                            value={admin.name}
-                            onChange={handleChange}
+                        <AdminSignUpForm
+                            {...admin}
+                            handleChange={handleChange}
+                            signup={signup}
                         />
-                        <br />
-                        <TextField
-                            label="Email"
-                            id="email"
-                            name="email"
-                            value={admin.email}
-                            onChange={handleChange}
-                        />
-                        <br />
-                        <TextField
-                            label="password"
-                            type="password"
-                            id="password"
-                            name="password"
-                            value={admin.password}
-                            onChange={handleChange}
-                        />
-                        <br />
-                        <TextField
-                            label="Company"
-                            id="company"
-                            name="company"
-                            value={admin.company}
-                            onChange={handleChange}
-                        />
-                        <br />
-                        <TextField
-                            label="Address"
-                            id="address"
-                            name="address"
-                            value={admin.address}
-                            onChange={handleChange}
-                        />
-                        <br />
-                        <TextField
-                            label="Role In Company"
-                            id="roleInCompany"
-                            name="roleInCompany"
-                            value={admin.roleInCompany}
-                            onChange={handleChange}
-                        />
-                        <br />
-                        <br />
-                        <Button
-                            className="login-btn"
-                            color="primary"
-                            variant="contained"
-                            type="submit"
-                            onClick={signup}
-                        >
-                            Signup
-                        </Button>
                         <br />
                         <br />
                         <Typography

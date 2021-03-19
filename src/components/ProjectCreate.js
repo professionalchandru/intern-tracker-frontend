@@ -3,7 +3,10 @@ import { Link, useHistory } from "react-router-dom";
 import { Button, TextField, Container, Typography } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import axios from "axios";
+
+// import componenets and pages
 import baseUrl from "../services/apiService";
+import PersistentDrawerLeft from "../components/Drawer";
 
 const ProjectCreate = () => {
     const [project, setProject] = useState({
@@ -58,63 +61,71 @@ const ProjectCreate = () => {
     return (
         <>
             <Container>
-                <section className="center-elements">
-                    <Typography variant="h4" className="typo">
-                        Create Project Profile
-                    </Typography>
+                <section>
+                    <PersistentDrawerLeft />
                 </section>
-                <section className="center-elements" style={{ width: "30%" }}>
-                    {isError && (
-                        <Alert
-                            onClose={() => {
-                                setIsError(false);
-                            }}
-                            severity="error"
-                        >
-                            {error}
-                        </Alert>
-                    )}
-                    {isSuccess && (
-                        <Alert
-                            onClose={() => {
-                                setIsSuccess(false);
-                            }}
-                            severity="success"
-                        >
-                            {success}
-                        </Alert>
-                    )}
-                </section>
-                <section className="center-elements">
-                    <form>
-                        <TextField
-                            label="Name"
-                            id="projectName"
-                            name="projectName"
-                            value={project.projectName}
-                            onChange={handleChange}
-                        />
-                        <br />
-                        <TextField
-                            label="Estimated Completion Time"
-                            id="projectEstimatedCompletionTime"
-                            name="projectEstimatedCompletionTime"
-                            value={project.projectEstimatedCompletionTime}
-                            onChange={handleChange}
-                        />
-                        <br />
-                        <br />
-                        <Button
-                            className="login-btn"
-                            color="primary"
-                            variant="contained"
-                            type="submit"
-                            onClick={createProject}
-                        >
-                            Create Project
-                        </Button>
-                    </form>
-                </section>
+                <main>
+                    <section className="center-elements">
+                        <Typography variant="h4" className="typo">
+                            Create Project Profile
+                        </Typography>
+                    </section>
+                    <section
+                        className="center-elements"
+                        style={{ width: "30%" }}
+                    >
+                        {isError && (
+                            <Alert
+                                onClose={() => {
+                                    setIsError(false);
+                                }}
+                                severity="error"
+                            >
+                                {error}
+                            </Alert>
+                        )}
+                        {isSuccess && (
+                            <Alert
+                                onClose={() => {
+                                    setIsSuccess(false);
+                                }}
+                                severity="success"
+                            >
+                                {success}
+                            </Alert>
+                        )}
+                    </section>
+                    <section className="center-elements">
+                        <form>
+                            <TextField
+                                label="Name"
+                                id="projectName"
+                                name="projectName"
+                                value={project.projectName}
+                                onChange={handleChange}
+                            />
+                            <br />
+                            <TextField
+                                label="Estimated Completion Time"
+                                id="projectEstimatedCompletionTime"
+                                name="projectEstimatedCompletionTime"
+                                value={project.projectEstimatedCompletionTime}
+                                onChange={handleChange}
+                            />
+                            <br />
+                            <br />
+                            <Button
+                                className="login-btn"
+                                color="primary"
+                                variant="contained"
+                                type="submit"
+                                onClick={createProject}
+                            >
+                                Create Project
+                            </Button>
+                        </form>
+                    </section>
+                </main>
             </Container>
         </>
     );

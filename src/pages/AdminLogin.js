@@ -29,7 +29,7 @@ const AdminLogin = () => {
             } else {
                 setIsError(false);
                 setError("");
-                history.push("/");
+                history.push("/admin/dashboard");
             }
         } else {
             setError("please fill all details");

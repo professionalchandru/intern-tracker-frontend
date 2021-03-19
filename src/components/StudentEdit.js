@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import { Button, TextField, Container, Typography } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import axios from "axios";
@@ -9,11 +9,11 @@ import baseUrl from "../services/apiService";
 import PersistentDrawerLeft from "../components/Drawer";
 import StudentCreateForm from "./StudentCreateForm";
 
-const StudentCreate = () => {
+const StudentEdit = () => {
+    const { id } = useParams();
     const [student, setStudent] = useState({
         name: "",
         email: "",
-        password: "",
         college: "",
         yearOfPassing: "",
         currentYear: "",
@@ -23,51 +23,53 @@ const StudentCreate = () => {
         dateOfJoining: "",
         projectId: "",
     });
-    const [projects, setProjects] = useState([]);
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
     const [isError, setIsError] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
     const history = useHistory();
 
-    useEffect(() => {
-        getProjects();
-    }, []);
-
-    const getProjects = async () => {
-        let getProjectResponse = await axios.get(`${baseUrl}/projects`);
-        if (getProjectResponse) {
-            setProjects((oldState) => {
-                return [...oldState, ...getProjectResponse.data];
-            });
+    const getStudent = async (id) => {
+        let studentResponse = await axios.get(`${baseUrl}/students/${id}`);
+        if (studentResponse.data) {
+            setStudent(studentResponse.data);
         }
     };
+
+    useEffect(() => {
+        getStudent(id);
+    }, [id]);
+
+    useEffect(() => {
+        if (isSuccess) {
+            setTimeout(() => {
+                history.push("/admin/viewStudent");
+            }, 3000);
+        }
+    });
 
     const handleChange = (e) => {
         const name = e.target.name;
         const value = e.target.value;
-        setStudent({ ...student, [name]: value });
+        setStudent({ ...student, [name]: value, projectId: 1 });
     };
 
-    const createStudent = async (e) => {
+    const editStudent = async (e) => {
         e.preventDefault();
         if (
             student.name &&
             student.email &&
-            student.password &&
             student.college &&
             student.yearOfPassing &&
             student.currentYear &&
             student.internRole &&
             student.company &&
             student.internDuration &&
-            student.dateOfJoining &&
-            student.projectId
+            student.dateOfJoining
         ) {
-            let signupCredentials = {
+            let EditCredentials = {
                 name: student.name,
                 email: student.email,
-                password: student.password,
                 college: student.college,
                 yearOfPassing: student.yearOfPassing,
                 currentYear: student.currentYear,
@@ -77,11 +79,10 @@ const StudentCreate = () => {
                 dateOfJoining: student.dateOfJoining,
                 address: student.address,
                 roleInCompany: student.roleInCompany,
-                projectId: parseInt(student.projectId),
             };
-            let response = await axios.post(
-                `${baseUrl}/students/create`,
-                signupCredentials
+            let response = await axios.patch(
+                `${baseUrl}/students/${id}`,
+                EditCredentials
             );
             // console.log(response.data.message, "res");
             if (response.data.status == "failure") {
@@ -113,7 +114,7 @@ const StudentCreate = () => {
                 <main>
                     <section className="center-elements">
                         <Typography variant="h4" className="typo">
-                            Create Student Profile
+                            Edit Student Profile
                         </Typography>
                     </section>
                     <section
@@ -146,8 +147,8 @@ const StudentCreate = () => {
                             <StudentCreateForm
                                 {...student}
                                 handleChange={handleChange}
-                                createStudent={createStudent}
-                                projects={projects}
+                                editStudent={editStudent}
+                                edit={true}
                             />
                         </form>
                     </section>
@@ -157,4 +158,4 @@ const StudentCreate = () => {
     );
 };
 
-export default StudentCreate;
+export default StudentEdit;

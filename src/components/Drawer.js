@@ -146,13 +146,13 @@ export default function PersistentDrawerLeft() {
                         </ListItemIcon>
                         <ListItemText primary="Dashboard" />
                     </ListItem>
-                    <ListItem button component={Link} to="/admin/dashboard">
+                    <ListItem button component={Link} to="/admin/addStudent">
                         <ListItemIcon>
                             <PersonAddIcon />
                         </ListItemIcon>
                         <ListItemText primary="Add Student" />
                     </ListItem>
-                    <ListItem button component={Link} to="/admin/dashboard">
+                    <ListItem button component={Link} to="/admin/addProject">
                         <ListItemIcon>
                             <QueueIcon />
                         </ListItemIcon>
@@ -161,19 +161,19 @@ export default function PersistentDrawerLeft() {
                 </List>
                 <Divider />
                 <List>
-                    <ListItem button component={Link} to="/admin/dashboard">
+                    <ListItem button component={Link} to="/admin/viewStudent">
                         <ListItemIcon>
                             <ViewListIcon />
                         </ListItemIcon>
                         <ListItemText primary="View Student" />
                     </ListItem>
-                    <ListItem button component={Link} to="/admin/dashboard">
+                    <ListItem button component={Link} to="/admin/viewProject">
                         <ListItemIcon>
                             <ViewListIcon />
                         </ListItemIcon>
                         <ListItemText primary="View Project" />
                     </ListItem>
-                    <ListItem button component={Link} to="/admin/dashboard">
+                    <ListItem button component={Link} to="/admin/viewWorkLog">
                         <ListItemIcon>
                             <ViewListIcon />
                         </ListItemIcon>
