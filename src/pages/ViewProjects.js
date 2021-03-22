@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, TextField, Container, Typography } from "@material-ui/core";
+import { Container, Typography } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import axios from "axios";
 
@@ -11,13 +11,13 @@ import ProjectTable from "../components/ProjectTable";
 const ViewProjects = () => {
     const [projects, setProjects] = useState([]);
     const [error, setError] = useState("");
-    const [success, setSuccess] = useState("");
+    const [success] = useState("");
     const [isError, setIsError] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
 
     const getProjects = async () => {
         let response = await axios.get(`${baseUrl}/projects`);
-        if (response.data.status == "failure") {
+        if (response.data.status === "failure") {
             setError(response.data.message);
             setIsError(true);
         } else {

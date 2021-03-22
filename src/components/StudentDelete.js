@@ -14,8 +14,8 @@ const StudentDelete = () => {
         }
     };
 
-    useEffect(async () => {
-        await deleteStudent(id);
+    useEffect(() => {
+        deleteStudent(id);
     }, [id]);
     return <></>;
 };

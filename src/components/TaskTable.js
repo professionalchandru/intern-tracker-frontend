@@ -10,7 +10,6 @@ import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 import IconButton from "@material-ui/core/IconButton";
 import EditIcon from "@material-ui/icons/Edit";
-import DeleteIcon from "@material-ui/icons/Delete";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import { Link } from "react-router-dom";
 
@@ -23,7 +22,7 @@ const useStyles = makeStyles({
     },
 });
 
-export default function ProjectTable(projects) {
+export default function TaskTable(tasks) {
     const classes = useStyles();
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -37,7 +36,7 @@ export default function ProjectTable(projects) {
         setPage(0);
     };
 
-    let projectsArray = Object.values(projects);
+    let tasksArray = Object.values(tasks);
 
     return (
         <Paper className={classes.root}>
@@ -47,62 +46,56 @@ export default function ProjectTable(projects) {
                         <TableRow>
                             <TableCell>Id</TableCell>
                             <TableCell>Name</TableCell>
-                            <TableCell>Estimated Completion Time</TableCell>
-                            <TableCell>Project Status</TableCell>
-                            <TableCell>No Of Students Assigned</TableCell>
-                            <TableCell>View | Edit | Delete</TableCell>
+                            <TableCell>Assigned By</TableCell>
+                            <TableCell>Assigned To</TableCell>
+                            {/* <TableCell>Project</TableCell> */}
+                            <TableCell>Task Status</TableCell>
+                            <TableCell>View | Edit </TableCell>
                         </TableRow>
                     </TableHead>
 
                     <TableBody>
-                        {projectsArray
+                        {tasksArray
                             .slice(
                                 page * rowsPerPage,
                                 page * rowsPerPage + rowsPerPage
                             )
-                            .map((project) => {
+                            .map((task) => {
                                 return (
-                                    <TableRow key={project.id}>
-                                        <TableCell>{project.id}</TableCell>
+                                    <TableRow key={task.id}>
+                                        <TableCell>{task.id}</TableCell>
+                                        <TableCell>{task.name}</TableCell>
+                                        <TableCell>{task.assingedBy}</TableCell>
+                                        <TableCell>{task.assignedTo}</TableCell>
+                                        {/* <TableCell>{task.project}</TableCell> */}
                                         <TableCell>
-                                            {project.projectName}
-                                        </TableCell>
-                                        <TableCell>
-                                            {
-                                                project.projectEstimatedCompletionTime
-                                            }
-                                        </TableCell>
-                                        <TableCell>
-                                            {project.isProjectCompleted
+                                            {task.isTaskCompleted
                                                 ? "Completed"
                                                 : "Not Completed"}
                                         </TableCell>
                                         <TableCell>
-                                            {project.noOfStudents}
-                                        </TableCell>
-                                        <TableCell>
                                             <IconButton
                                                 component={Link}
-                                                to={`/admin/project/view/${project.id}`}
+                                                to={`/student/task/view/${task.id}`}
                                             >
                                                 <VisibilityIcon color="primary" />
                                             </IconButton>
                                             |
                                             <IconButton
                                                 component={Link}
-                                                to={`/admin/project/edit/${project.id}`}
+                                                to={`/student/task/edit/${task.id}`}
                                             >
                                                 <EditIcon
                                                     style={{ color: "#FFCC00" }}
                                                 />
                                             </IconButton>
-                                            |
+                                            {/* |
                                             <IconButton
                                                 component={Link}
-                                                to={`/admin/project/delete/${project.id}`}
+                                                to={`/student/task/delete/${task.id}`}
                                             >
-                                                <DeleteIcon color="secondary" />
-                                            </IconButton>
+                                                <DeleteIcon />
+                                            </IconButton> */}
                                         </TableCell>
                                     </TableRow>
                                 );
@@ -113,7 +106,7 @@ export default function ProjectTable(projects) {
             <TablePagination
                 rowsPerPageOptions={[10, 25, 100]}
                 component="div"
-                count={projectsArray.length}
+                count={tasksArray.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 onChangePage={handleChangePage}

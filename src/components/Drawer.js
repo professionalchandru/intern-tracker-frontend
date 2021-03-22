@@ -19,7 +19,11 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import ViewListIcon from "@material-ui/icons/ViewList";
-import { Link } from "react-router-dom";
+import PersonOutlineIcon from "@material-ui/icons/PersonOutline";
+import { Link, useHistory } from "react-router-dom";
+import { Button } from "@material-ui/core";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../redux/actions";
 
 const drawerWidth = 240;
 
@@ -81,7 +85,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function PersistentDrawerLeft() {
+    let history = useHistory();
+    let userType = useSelector((state) => state.isLoggedIn.userType);
     const classes = useStyles();
+    const dispatch = useDispatch();
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
 
@@ -91,6 +98,15 @@ export default function PersistentDrawerLeft() {
 
     const handleDrawerClose = () => {
         setOpen(false);
+    };
+
+    const handleLogout = () => {
+        if (userType === "admin") {
+            history.push("/login/admin");
+        } else if (userType === "student") {
+            history.push("/login/student");
+        }
+        dispatch(logout({ id: "", email: "", token: "", userType: "" }));
     };
 
     return (
@@ -118,6 +134,14 @@ export default function PersistentDrawerLeft() {
                     <Typography variant="h6" noWrap>
                         Intern Tracker
                     </Typography>
+                    <Button
+                        style={{ marginLeft: "auto" }}
+                        variant="contained"
+                        color="secondary"
+                        onClick={handleLogout}
+                    >
+                        Logout
+                    </Button>
                 </Toolbar>
             </AppBar>
             <Drawer
@@ -139,49 +163,100 @@ export default function PersistentDrawerLeft() {
                     </IconButton>
                 </div>
                 <Divider />
-                <List>
-                    <ListItem button component={Link} to="/admin/dashboard">
-                        <ListItemIcon>
-                            <DashboardIcon />
-                        </ListItemIcon>
-                        <ListItemText primary="Dashboard" />
-                    </ListItem>
-                    <ListItem button component={Link} to="/admin/addStudent">
-                        <ListItemIcon>
-                            <PersonAddIcon />
-                        </ListItemIcon>
-                        <ListItemText primary="Add Student" />
-                    </ListItem>
-                    <ListItem button component={Link} to="/admin/addProject">
-                        <ListItemIcon>
-                            <QueueIcon />
-                        </ListItemIcon>
-                        <ListItemText primary="Add Project" />
-                    </ListItem>
-                </List>
-                <Divider />
-                <List>
-                    <ListItem button component={Link} to="/admin/viewStudent">
-                        <ListItemIcon>
-                            <ViewListIcon />
-                        </ListItemIcon>
-                        <ListItemText primary="View Student" />
-                    </ListItem>
-                    <ListItem button component={Link} to="/admin/viewProject">
-                        <ListItemIcon>
-                            <ViewListIcon />
-                        </ListItemIcon>
-                        <ListItemText primary="View Project" />
-                    </ListItem>
-                    <ListItem button component={Link} to="/admin/viewWorkLog">
+                {userType === "admin" && (
+                    <div>
+                        <List>
+                            <ListItem
+                                button
+                                component={Link}
+                                to="/admin/dashboard"
+                            >
+                                <ListItemIcon>
+                                    <DashboardIcon />
+                                </ListItemIcon>
+                                <ListItemText primary="Dashboard" />
+                            </ListItem>
+                            <ListItem
+                                button
+                                component={Link}
+                                to="/admin/addStudent"
+                            >
+                                <ListItemIcon>
+                                    <PersonAddIcon />
+                                </ListItemIcon>
+                                <ListItemText primary="Add Student" />
+                            </ListItem>
+                            <ListItem
+                                button
+                                component={Link}
+                                to="/admin/addProject"
+                            >
+                                <ListItemIcon>
+                                    <QueueIcon />
+                                </ListItemIcon>
+                                <ListItemText primary="Add Project" />
+                            </ListItem>
+                        </List>
+                        <Divider />
+                        <List>
+                            <ListItem
+                                button
+                                component={Link}
+                                to="/admin/viewStudent"
+                            >
+                                <ListItemIcon>
+                                    <ViewListIcon />
+                                </ListItemIcon>
+                                <ListItemText primary="View Student" />
+                            </ListItem>
+                            <ListItem
+                                button
+                                component={Link}
+                                to="/admin/viewProject"
+                            >
+                                <ListItemIcon>
+                                    <ViewListIcon />
+                                </ListItemIcon>
+                                <ListItemText primary="View Project" />
+                            </ListItem>
+                            {/* <ListItem button component={Link} to="/admin/viewWorkLog">
                         <ListItemIcon>
                             <ViewListIcon />
                         </ListItemIcon>
                         <ListItemText primary="View Work Log" />
-                    </ListItem>
-                </List>
-                {/* <Divider />                 */}
+                    </ListItem> */}
+                        </List>
+                        <Divider />
+                    </div>
+                )}
+                {userType === "student" && (
+                    <div>
+                        <List>
+                            <ListItem
+                                button
+                                component={Link}
+                                to="/student/profile"
+                            >
+                                <ListItemIcon>
+                                    <PersonOutlineIcon />
+                                </ListItemIcon>
+                                <ListItemText primary="Profile" />
+                            </ListItem>
+                            <ListItem
+                                button
+                                component={Link}
+                                to="/student/taskList"
+                            >
+                                <ListItemIcon>
+                                    <ViewListIcon />
+                                </ListItemIcon>
+                                <ListItemText primary="Tasks" />
+                            </ListItem>
+                        </List>
+                    </div>
+                )}
             </Drawer>
+
             <main
                 className={clsx(classes.content, {
                     [classes.contentShift]: open,

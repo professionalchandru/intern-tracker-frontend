@@ -92,14 +92,16 @@ export default function StudentTable(students) {
                                                 component={Link}
                                                 to={`/admin/student/edit/${student.id}`}
                                             >
-                                                <EditIcon />
+                                                <EditIcon
+                                                    style={{ color: "#FFCC00" }}
+                                                />
                                             </IconButton>
                                             |
                                             <IconButton
                                                 component={Link}
                                                 to={`/admin/student/delete/${student.id}`}
                                             >
-                                                <DeleteIcon />
+                                                <DeleteIcon color="secondary" />
                                             </IconButton>
                                         </TableCell>
                                     </TableRow>

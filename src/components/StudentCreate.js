@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
-import { Button, TextField, Container, Typography } from "@material-ui/core";
+import { Container, Typography } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import axios from "axios";
 
@@ -28,7 +27,6 @@ const StudentCreate = () => {
     const [success, setSuccess] = useState("");
     const [isError, setIsError] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
-    const history = useHistory();
 
     useEffect(() => {
         getProjects();
@@ -83,8 +81,8 @@ const StudentCreate = () => {
                 `${baseUrl}/students/create`,
                 signupCredentials
             );
-            // console.log(response.data.message, "res");
-            if (response.data.status == "failure") {
+
+            if (response.data.status === "failure") {
                 setIsSuccess(false);
                 setSuccess("");
                 setError(response.data.message);
@@ -98,7 +96,6 @@ const StudentCreate = () => {
                 // history.push("/login/student");
             }
         } else {
-            console.log(student);
             setError("please fill all details");
             setIsError(true);
         }

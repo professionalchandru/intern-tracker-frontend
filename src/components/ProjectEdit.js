@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useHistory, useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { Button, TextField, Container, Typography } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import axios from "axios";
@@ -70,8 +70,8 @@ const ProjectEdit = () => {
                 `${baseUrl}/projects/${id}`,
                 EditCredentials
             );
-            // console.log(response.data.message, "res");
-            if (response.data.status == "failure") {
+
+            if (response.data.status === "failure") {
                 setIsSuccess(false);
                 setSuccess("");
                 setError(response.data.message);
@@ -85,7 +85,6 @@ const ProjectEdit = () => {
                 // history.push("/login/project");
             }
         } else {
-            console.log(project);
             setError("please fill all details");
             setIsError(true);
         }
@@ -169,6 +168,18 @@ const ProjectEdit = () => {
                             <br />
                             <Button
                                 className="login-btn"
+                                color="secondary"
+                                variant="contained"
+                                style={{
+                                    backgroundColor: "brown",
+                                    marginRight: "5px",
+                                }}
+                                onClick={() => history.goBack()}
+                            >
+                                Cancel
+                            </Button>
+                            <Button
+                                className="login-btn"
                                 color="primary"
                                 variant="contained"
                                 type="submit"
@@ -177,14 +188,6 @@ const ProjectEdit = () => {
                                 Update Project
                             </Button>
                         </form>
-                        {/* <form>
-                            <ProjectCreateForm
-                                {...project}
-                                handleChange={handleChange}
-                                editProject={editProject}
-                                edit={true}
-                            />
-                        </form> */}
                     </section>
                 </main>
             </Container>

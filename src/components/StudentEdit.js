@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Link, useHistory, useParams } from "react-router-dom";
-import { Button, TextField, Container, Typography } from "@material-ui/core";
+import { useHistory, useParams } from "react-router-dom";
+import { Container, Typography } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import axios from "axios";
 
@@ -84,8 +84,8 @@ const StudentEdit = () => {
                 `${baseUrl}/students/${id}`,
                 EditCredentials
             );
-            // console.log(response.data.message, "res");
-            if (response.data.status == "failure") {
+
+            if (response.data.status === "failure") {
                 setIsSuccess(false);
                 setSuccess("");
                 setError(response.data.message);
@@ -95,11 +95,8 @@ const StudentEdit = () => {
                 setError("");
                 setSuccess(response.data.message);
                 setIsSuccess(true);
-
-                // history.push("/login/student");
             }
         } else {
-            console.log(student);
             setError("please fill all details");
             setIsError(true);
         }

@@ -1,9 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { TextField, Button } from "@material-ui/core";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
+import { useHistory } from "react-router-dom";
 
 const StudentCreateForm = ({
     name,
@@ -26,6 +23,7 @@ const StudentCreateForm = ({
     if (!edit) {
         newProjects = Object.values(projects);
     }
+    let history = useHistory();
     return (
         <>
             <TextField
@@ -126,7 +124,7 @@ const StudentCreateForm = ({
                         value={newProjects.id}
                         name="projectId"
                         id="projectId"
-                        onChange={handleChange}
+                        onClick={handleChange}
                         style={{ width: "200px" }}
                     >
                         {newProjects.map((project) => {
@@ -142,6 +140,18 @@ const StudentCreateForm = ({
 
             <br />
             <br />
+            <Button
+                className="login-btn"
+                color="secondary"
+                variant="contained"
+                style={{
+                    backgroundColor: "brown",
+                    marginRight: "5px",
+                }}
+                onClick={() => history.goBack()}
+            >
+                Cancel
+            </Button>
             {edit && (
                 <Button
                     className="login-btn"

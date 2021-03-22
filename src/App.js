@@ -19,6 +19,10 @@ import ProjectEdit from "./components/ProjectEdit";
 import ProjectDelete from "./components/ProjectDelete";
 import AddTask from "./components/AddTask";
 import TaskView from "./components/TaskView";
+import StudentDashboard from "./pages/StudentDashboard";
+import StudentProfile from "./components/StudentProfile";
+import StudentTaskList from "./pages/StudentTaskList";
+import TaskEdit from "./components/TaskEdit";
 
 function App() {
     return (
@@ -33,9 +37,6 @@ function App() {
                 <Route exact path="/login/admin">
                     <AdminLogin />
                 </Route>
-                <Route exact path="/login/student">
-                    <StudentLogin />
-                </Route>
                 <Route exact path="/admin/addStudent">
                     <StudentCreate />
                 </Route>
@@ -47,7 +48,6 @@ function App() {
                     path="/admin/student/delete/:id"
                     children={<StudentDelete />}
                 ></Route>
-
                 <Route exact path="/admin/addProject">
                     <ProjectCreate />
                 </Route>
@@ -63,7 +63,6 @@ function App() {
                     path="/admin/project/delete/:id"
                     children={<ProjectDelete />}
                 ></Route>
-
                 <Route exact path="/admin/dashboard">
                     <AdminDashboard />
                 </Route>
@@ -76,12 +75,29 @@ function App() {
                 <Route exact path="/admin/viewWorkLog">
                     <ViewWorkLog />
                 </Route>
-
                 <Route exact path="/admin/project/:projectId/task/add">
                     <AddTask />
                 </Route>
                 <Route exact path="/admin/project/:projectId/task/view/:taskId">
                     <TaskView />
+                </Route>
+                <Route exact path="/login/student">
+                    <StudentLogin />
+                </Route>
+                <Route exact path="/student/dashboard">
+                    <StudentDashboard />
+                </Route>
+                <Route exact path="/student/profile">
+                    <StudentProfile />
+                </Route>
+                <Route exact path="/student/taskList">
+                    <StudentTaskList />
+                </Route>
+                <Route exact path="/student/task/view/:taskId">
+                    <TaskView />
+                </Route>
+                <Route exact path="/student/task/edit/:taskId">
+                    <TaskEdit />
                 </Route>
             </Switch>
         </div>

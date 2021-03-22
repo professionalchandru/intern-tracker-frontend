@@ -1,20 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
-import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import PersistentDrawerLeft from "../components/Drawer";
 import { Container, Divider } from "@material-ui/core";
 import axios from "axios";
 import { useHistory, useParams } from "react-router";
-import { Link } from "react-router-dom";
 import baseUrl from "../services/apiService";
 import DeleteIcon from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
-
-import AddTask from "./AddTask";
+import KeyboardBackspaceIcon from "@material-ui/icons/KeyboardBackspace";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles({
     root: {
@@ -39,9 +36,10 @@ const useStyles = makeStyles({
 
 export default function TaskView() {
     const classes = useStyles();
-    const { projectId, taskId } = useParams();
+    const { taskId } = useParams();
     const [task, setTask] = useState({});
     const history = useHistory();
+    const userType = useSelector((state) => state.isLoggedIn.userType);
 
     const getTaskDetails = async (taskId) => {
         let taskDetails = await axios.get(`${baseUrl}/tasks/${taskId}`);
@@ -72,6 +70,16 @@ export default function TaskView() {
                 <main>
                     <Card className={classes.root}>
                         <CardContent>
+                            <IconButton
+                                style={{
+                                    float: "left",
+                                    color: "black",
+                                }}
+                                variant="contained"
+                                onClick={() => history.goBack()}
+                            >
+                                <KeyboardBackspaceIcon />
+                            </IconButton>
                             <Typography
                                 className={classes.title}
                                 color="primary"
@@ -80,23 +88,30 @@ export default function TaskView() {
                             >
                                 {task.name}
                             </Typography>
-                            <IconButton
-                                style={{
-                                    float: "right",
-                                    backgroundColor: "rgb(207, 48, 17)",
-                                    color: "white",
-                                }}
-                                variant="contained"
-                                onClick={() => deleteTask(taskId)}
-                            >
-                                <DeleteIcon />
-                            </IconButton>
+                            {userType === "admin" && (
+                                <IconButton
+                                    style={{
+                                        float: "right",
+                                        backgroundColor: "rgb(207, 48, 17)",
+                                        color: "white",
+                                    }}
+                                    variant="contained"
+                                    onClick={() => deleteTask(taskId)}
+                                >
+                                    <DeleteIcon />
+                                </IconButton>
+                            )}
                             <Typography variant="subtitle2" componenet="p">
                                 {task.description}
                             </Typography>
                             <Typography
                                 className={classes.pos}
                                 color="textSecondary"
+                                style={
+                                    task.isTaskCompleted
+                                        ? { color: "green" }
+                                        : { color: "red" }
+                                }
                             >
                                 Task Status:{" "}
                                 {task.isTaskCompleted

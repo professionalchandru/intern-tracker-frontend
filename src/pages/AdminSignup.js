@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-import { Button, TextField, Container, Typography } from "@material-ui/core";
+import { Container, Typography } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import axios from "axios";
 import baseUrl from "../services/apiService";
@@ -47,7 +47,7 @@ const AdminSignup = () => {
                 `${baseUrl}/admin`,
                 signupCredentials
             );
-            if (response.data.status == "failure") {
+            if (response.data.status === "failure") {
                 setError(response.data.message);
                 setIsError(true);
             } else {

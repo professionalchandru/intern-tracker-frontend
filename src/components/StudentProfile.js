@@ -2,16 +2,16 @@ import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
-import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import PersistentDrawerLeft from "../components/Drawer";
 import { Container, Divider } from "@material-ui/core";
 import axios from "axios";
 import { useHistory, useParams } from "react-router";
-import { Link } from "react-router-dom";
 import baseUrl from "../services/apiService";
+import DeleteIcon from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
 import KeyboardBackspaceIcon from "@material-ui/icons/KeyboardBackspace";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles({
     root: {
@@ -34,50 +34,27 @@ const useStyles = makeStyles({
     },
 });
 
-export default function ProjectView() {
+export default function StudentProfile() {
     const classes = useStyles();
-    const { id } = useParams();
-    const [project, setProject] = useState({});
-    const [students, setStudents] = useState([]);
-    const [tasks, setTasks] = useState([]);
+    const [student, setStudent] = useState({});
     const history = useHistory();
+    const userType = useSelector((state) => state.isLoggedIn.userType);
+    const studentId = useSelector((state) => state.isLoggedIn.userId);
 
-    const getProjectDetails = async (id) => {
-        let projectDetails = await axios.get(`${baseUrl}/projects/${id}`);
-        if (projectDetails) {
-            setProject((oldState) => {
-                return { ...oldState, ...projectDetails.data };
+    const getStudentDetails = async (studentId) => {
+        let studentDetails = await axios.get(
+            `${baseUrl}/students/${studentId}`
+        );
+        if (studentDetails) {
+            setStudent((oldState) => {
+                return { ...oldState, ...studentDetails.data };
             });
         }
     };
 
-    const getStudentDetails = async (id) => {
-        let studentDetails = await axios.get(
-            `${baseUrl}/students?filter[where][projectId]=${id}}`
-        );
-        setStudents((oldState) => {
-            return [...oldState, ...studentDetails.data];
-        });
-    };
-
-    const getTasksDetails = async (id) => {
-        let taskDetails = await axios.get(
-            `${baseUrl}/tasks?filter[where][projectId]=${id}}`
-        );
-        setTasks((oldState) => {
-            return [...oldState, ...taskDetails.data];
-        });
-    };
-
-    const addTask = async (projectId) => {
-        history.push(`/admin/project/${projectId}/task/add`);
-    };
-
     useEffect(() => {
-        getProjectDetails(id);
-        getStudentDetails(id);
-        getTasksDetails(id);
-    }, [id]);
+        getStudentDetails(studentId);
+    }, [studentId]);
 
     return (
         <>
@@ -104,68 +81,79 @@ export default function ProjectView() {
                                 gutterBottom
                                 variant="caption"
                             >
-                                {project.projectName}
+                                {student.name}
                             </Typography>
-                            <Button
-                                style={{ float: "right" }}
-                                variant="contained"
-                                color="primary"
-                                onClick={() => addTask(id)}
-                            >
-                                Add Task
-                            </Button>
-                            <Typography variant="subtitle2" componenet="p">
-                                {project.projectDescription}
-                            </Typography>
+                            {userType === "admin" && (
+                                <IconButton
+                                    style={{
+                                        float: "right",
+                                        backgroundColor: "rgb(207, 48, 17)",
+                                        color: "white",
+                                    }}
+                                    variant="contained"
+                                >
+                                    <DeleteIcon />
+                                </IconButton>
+                            )}
                             <Typography
                                 className={classes.pos}
                                 color="textSecondary"
-                                style={
-                                    project.isProjectCompleted
-                                        ? { color: "green" }
-                                        : { color: "red" }
-                                }
+                                style={{ color: "purple", paddingLeft: "50px" }}
                             >
-                                Project Status:{" "}
-                                {project.isProjectCompleted
-                                    ? "Completed"
-                                    : "Not Completed"}
+                                Email: {student.email}
                             </Typography>
 
                             <Divider />
 
                             <Typography variant="h6" component="h3">
                                 <span style={{ color: "darkred" }}>
-                                    Students:{" "}
+                                    College:{" "}
                                 </span>
-                                {students.length >= 1 &&
-                                    students.map((student) => {
-                                        return `${student.name}, `;
-                                    })}
+                                {student.college}
                             </Typography>
                             <br />
                             <Typography variant="h6" component="h3">
                                 <span style={{ color: "darkred" }}>
-                                    Tasks:{" "}
+                                    Year Of Passing:{" "}
                                 </span>
-                                {tasks.length
-                                    ? tasks.map((task) => {
-                                          return (
-                                              <Typography
-                                                  variant="h6"
-                                                  key={task.id}
-                                                  style={{
-                                                      paddingLeft: "20px",
-                                                  }}
-                                                  component={Link}
-                                                  to={`/admin/project/${project.id}/task/view/${task.id}`}
-                                              >
-                                                  {task.name}
-                                              </Typography>
-                                          );
-                                      })
-                                    : "No Task Found"}
+                                {student.yearOfPassing}
                             </Typography>
+                            <br />
+                            <Typography variant="h6" component="h3">
+                                <span style={{ color: "darkred" }}>
+                                    Current Year:{" "}
+                                </span>
+                                {student.currentYear}
+                            </Typography>
+                            <br />
+                            <Typography variant="h6" component="h3">
+                                <span style={{ color: "darkred" }}>
+                                    Intern Role:{" "}
+                                </span>
+                                {student.internRole}
+                            </Typography>
+                            <br />
+                            <Typography variant="h6" component="h3">
+                                <span style={{ color: "darkred" }}>
+                                    Company:{" "}
+                                </span>
+                                {student.company}
+                            </Typography>
+                            <br />
+                            <Typography variant="h6" component="h3">
+                                <span style={{ color: "darkred" }}>
+                                    Intern Duration:{" "}
+                                </span>
+                                {student.internDuration}
+                            </Typography>
+                            <br />
+                            <Typography variant="h6" component="h3">
+                                <span style={{ color: "darkred" }}>
+                                    Date Of Joining:{" "}
+                                </span>
+                                {student.dateOfJoining}
+                            </Typography>
+                            <br />
 
                             <Divider />
 
@@ -175,16 +163,16 @@ export default function ProjectView() {
                                 variant="subtitle2"
                                 component="p"
                             >
-                                Project Created At: {project.createdAt}
+                                Student Created At: {student.createdAt}
                             </Typography>
-                            {project.updatedAt && (
+                            {student.updatedAt && (
                                 <Typography
                                     className={classes.pos}
                                     color="textSecondary"
                                     variant="subtitle2"
                                     component="p"
                                 >
-                                    Last Updated At: {project.updatedAt}
+                                    Last Updated At: {student.updatedAt}
                                 </Typography>
                             )}
                         </CardContent>

@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { Button, TextField, Container, Typography } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { login } from "../redux/actions";
 
 // component imports
 import baseUrl from "../services/apiService";
@@ -13,8 +15,9 @@ const StudentLogin = () => {
     const [error, setError] = useState("");
     const [isError, setIsError] = useState(false);
     const history = useHistory();
+    const dispatch = useDispatch();
 
-    const login = async (e) => {
+    const logIn = async (e) => {
         e.preventDefault();
         setIsError(false);
         setError("");
@@ -33,7 +36,15 @@ const StudentLogin = () => {
             } else {
                 setIsError(false);
                 setError("");
-                history.push("/");
+                dispatch(
+                    login({
+                        id: response.data.id,
+                        email: email,
+                        userType: response.data.userType,
+                        token: "",
+                    })
+                );
+                history.push("/student/taskList");
             }
         } else {
             setError("please fill all details");
@@ -86,7 +97,7 @@ const StudentLogin = () => {
                             color="primary"
                             variant="contained"
                             type="submit"
-                            onClick={login}
+                            onClick={logIn}
                         >
                             Login
                         </Button>

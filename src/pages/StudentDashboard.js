@@ -4,7 +4,7 @@ import { Container } from "@material-ui/core";
 // import components
 import PersistentDrawerLeft from "../components/Drawer";
 
-const AdminDashboard = () => {
+const StudentDashboard = () => {
     return (
         <>
             <Container>
@@ -19,4 +19,4 @@ const AdminDashboard = () => {
     );
 };
 
-export default AdminDashboard;
+export default StudentDashboard;

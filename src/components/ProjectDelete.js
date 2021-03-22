@@ -14,8 +14,8 @@ const ProjectDelete = () => {
         }
     };
 
-    useEffect(async () => {
-        await deleteProject(id);
+    useEffect(() => {
+        deleteProject(id);
     }, [id]);
     return <></>;
 };

@@ -4,6 +4,8 @@ import { Button, TextField, Container, Typography } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import axios from "axios";
 import baseUrl from "../services/apiService";
+import { useDispatch } from "react-redux";
+import { login } from "../redux/actions";
 
 const AdminLogin = () => {
     const [email, setEmail] = useState("");
@@ -11,8 +13,9 @@ const AdminLogin = () => {
     const [error, setError] = useState("");
     const [isError, setIsError] = useState(false);
     const history = useHistory();
+    const dispatch = useDispatch();
 
-    const login = async (e) => {
+    const logIn = async (e) => {
         e.preventDefault();
         if (email && password) {
             let loginCredentials = {
@@ -29,6 +32,14 @@ const AdminLogin = () => {
             } else {
                 setIsError(false);
                 setError("");
+                dispatch(
+                    login({
+                        id: response.data.id,
+                        email: email,
+                        userType: response.data.userType,
+                        token: "",
+                    })
+                );
                 history.push("/admin/dashboard");
             }
         } else {
@@ -82,7 +93,7 @@ const AdminLogin = () => {
                             color="primary"
                             variant="contained"
                             type="submit"
-                            onClick={login}
+                            onClick={logIn}
                         >
                             Login
                         </Button>

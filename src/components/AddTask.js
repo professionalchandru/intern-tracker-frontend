@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useHistory, useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { Button, TextField, Container, Typography } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import axios from "axios";
@@ -31,7 +31,6 @@ const AddTask = () => {
         let studentDetails = await axios.get(
             `${baseUrl}/students?filter[where][projectId]=${projectId}}`
         );
-        console.log(studentDetails);
         if (studentDetails.data) {
             setStudents([...studentDetails.data]);
         }
@@ -39,7 +38,7 @@ const AddTask = () => {
 
     useEffect(() => {
         getStudents(projectId);
-    }, []);
+    }, [projectId]);
 
     const handleChange = (e) => {
         const name = e.target.name;
@@ -58,7 +57,7 @@ const AddTask = () => {
             let selectedStudentName = students.filter(
                 (student) => parseInt(task.studentId) === student.id
             );
-            console.log(selectedStudentName[0].name, "selectedStudentName");
+
             let signupCredentials = {
                 name: task.name,
                 description: task.description,
@@ -73,8 +72,8 @@ const AddTask = () => {
                 `${baseUrl}/tasks/create`,
                 signupCredentials
             );
-            console.log(response.data.message, "res");
-            if (response.data.status == "failure") {
+
+            if (response.data.status === "failure") {
                 setIsSuccess(false);
                 setSuccess("");
                 setError(response.data.message);
@@ -90,7 +89,6 @@ const AddTask = () => {
                 }, 3000);
             }
         } else {
-            console.log(task);
             setError("please fill all details");
             setIsError(true);
         }
@@ -188,6 +186,18 @@ const AddTask = () => {
 
                             <br />
                             <br />
+                            <Button
+                                className="login-btn"
+                                color="secondary"
+                                variant="contained"
+                                style={{
+                                    backgroundColor: "brown",
+                                    marginRight: "5px",
+                                }}
+                                onClick={() => history.goBack()}
+                            >
+                                Cancel
+                            </Button>
                             <Button
                                 className="login-btn"
                                 color="primary"
