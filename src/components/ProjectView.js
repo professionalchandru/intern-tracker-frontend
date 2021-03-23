@@ -53,7 +53,7 @@ export default function ProjectView() {
 
     const getStudentDetails = async (id) => {
         let studentDetails = await axios.get(
-            `${baseUrl}/students?filter[where][projectId]=${id}}`
+            `${baseUrl}/students?filter[where][projectId]=${id}`
         );
         setStudents((oldState) => {
             return [...oldState, ...studentDetails.data];
@@ -62,7 +62,7 @@ export default function ProjectView() {
 
     const getTasksDetails = async (id) => {
         let taskDetails = await axios.get(
-            `${baseUrl}/tasks?filter[where][projectId]=${id}}`
+            `${baseUrl}/tasks?filter[where][projectId]=${id}`
         );
         setTasks((oldState) => {
             return [...oldState, ...taskDetails.data];

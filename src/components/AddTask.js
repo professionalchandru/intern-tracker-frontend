@@ -29,7 +29,7 @@ const AddTask = () => {
 
     const getStudents = async (projectId) => {
         let studentDetails = await axios.get(
-            `${baseUrl}/students?filter[where][projectId]=${projectId}}`
+            `${baseUrl}/students?filter[where][projectId]=${projectId}`
         );
         if (studentDetails.data) {
             setStudents([...studentDetails.data]);
